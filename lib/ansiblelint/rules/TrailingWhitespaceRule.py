@@ -17,8 +17,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+from typing import TYPE_CHECKING, Union
 
 from ansiblelint.rules import AnsibleLintRule
+
+if TYPE_CHECKING:
+    from ansiblelint.file_utils import TargetFile
 
 
 class TrailingWhitespaceRule(AnsibleLintRule):
@@ -29,6 +33,6 @@ class TrailingWhitespaceRule(AnsibleLintRule):
     tags = ['formatting', 'ANSIBLE0002']
     version_added = 'historic'
 
-    def match(self, file, line):
+    def match(self, file: "TargetFile", line: str = "") -> Union[bool, str]:
         line = line.replace("\r", "")
         return line.rstrip() != line

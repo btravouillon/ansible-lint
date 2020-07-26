@@ -541,7 +541,7 @@ An example rule using ``match`` is:
                       'declarations'
         tags = { 'deprecated' }
 
-        def match(self, file, line):
+        match(self, file: "TargetFile", line: str = "") -> Union[bool, str]:
             return '${' in line
 
 An example rule using ``matchtask`` is:

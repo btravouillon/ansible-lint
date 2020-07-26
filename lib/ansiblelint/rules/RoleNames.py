@@ -20,9 +20,13 @@
 # THE SOFTWARE.
 
 import re
-from typing import List
+from typing import TYPE_CHECKING, List, Union
 
 from ansiblelint.rules import AnsibleLintRule
+
+if TYPE_CHECKING:
+    from ansiblelint.file_utils import TargetFile
+
 
 ROLE_NAME_REGEX = '^[a-z][a-z0-9_]+$'
 
@@ -45,8 +49,10 @@ class RoleNames(AnsibleLintRule):
 
     ROLE_NAME_REGEXP = re.compile(ROLE_NAME_REGEX)
 
-    def match(self, file, text):
+    def match(self, file: "TargetFile", line: str = "") -> Union[bool, str]:
 
+        if not file:
+            return False
         path = file['path'].split("/")
         if "roles" in path:
             role_name = path[path.index("roles") + 1]

@@ -6,11 +6,14 @@ import os
 import re
 from collections import defaultdict
 from importlib.abc import Loader
-from typing import List
+from typing import TYPE_CHECKING, List, Union
 
 import ansiblelint.utils
 from ansiblelint.errors import MatchError
 from ansiblelint.skip_utils import append_skipped_rules, get_rule_skips_from_line
+
+if TYPE_CHECKING:
+    from ansiblelint.file_utils import TargetFile
 
 _logger = logging.getLogger(__name__)
 
@@ -28,9 +31,11 @@ class AnsibleLintRule(object):
     tags: List[str] = []
     shortdesc: str = ""
     description: str = ""
-    match = None
     matchtask = None
     matchplay = None
+
+    def match(self, file: "TargetFile", line: str = "") -> Union[bool, str]:
+        return False
 
     @staticmethod
     def unjinja(text):

@@ -2,9 +2,12 @@
 # Copyright (c) 2018, Ansible Project
 
 import os
-from typing import List
+from typing import TYPE_CHECKING, List, Union
 
 from ansiblelint.rules import AnsibleLintRule
+
+if TYPE_CHECKING:
+    from ansiblelint.file_utils import TargetFile
 
 
 class PlaybookExtension(AnsibleLintRule):
@@ -13,10 +16,10 @@ class PlaybookExtension(AnsibleLintRule):
     description = 'Playbooks should have the ".yml" or ".yaml" extension'
     severity = 'MEDIUM'
     tags = ['formatting']
-    done = []  # type: List  # already noticed path list
+    done: List[str] = []
     version_added = 'v4.0.0'
 
-    def match(self, file, text):
+    def match(self, file: "TargetFile", line: str = "") -> Union[bool, str]:
         if file['type'] != 'playbook':
             return False
 

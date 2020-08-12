@@ -1,14 +1,15 @@
+"""PyTest Fixtures."""
 import os
+from test import RunFromText
 
 import pytest
 
 from ansiblelint.rules import RulesCollection
 
-from . import RunFromText
-
 
 @pytest.fixture
 def default_rules_collection():
+    """Return default rule collection."""
     return RulesCollection(rulesdirs=[os.path.abspath(os.path.join('lib',
                                                                    'ansiblelint',
                                                                    'rules'))])
@@ -16,6 +17,7 @@ def default_rules_collection():
 
 @pytest.fixture
 def default_text_runner(default_rules_collection):
+    """Return TextRunner."""
     return RunFromText(default_rules_collection)
 
 
